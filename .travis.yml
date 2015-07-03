@@ -13,5 +13,7 @@ python:
   - pypy3
 script:
   - make
+install:
+  - travis_retry pip install coveralls
 after_success:
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls && coveralls; fi
+  - coveralls
