@@ -2,6 +2,12 @@ Workshopper for PySchool
 ========================
 ...
 
+-----
+
+|pypi| |unix_build| |windows_build| |coverage|
+
+-----
+
 ==========
 Contribute
 ==========
