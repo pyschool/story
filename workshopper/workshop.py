@@ -12,3 +12,6 @@ class Workshop(object):
         ExitCommand,
     ]
     default_command = MenuCommand.name
+
+    def run(self):
+        pass
