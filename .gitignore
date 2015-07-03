@@ -1,0 +1,8 @@
+dist
+workshopper.egg-info
+build
+*.pyc
+*.egg
+.tox
+.coverage
+htmlcov

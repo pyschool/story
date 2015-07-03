@@ -1,0 +1,17 @@
+# https://travis-ci.org/pyschool/workshopper
+sudo: false
+os:
+  - linux
+  - osx
+env:
+  global:
+    - NEWEST_PYTHON=3.4
+language: python
+python:
+  - 3.3
+  - 3.4
+  - pypy3
+script:
+  - make
+after_success:
+  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls && coveralls; fi
