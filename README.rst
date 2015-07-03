@@ -1,5 +1,7 @@
-Workshopper for PySchool |pypi| |build| |coverage|
+Workshopper for PySchool
 ========================
+
+|pypi| |build| |coverage|
 
 .. image:: https://cloud.githubusercontent.com/assets/164531/8492123/beeba244-211b-11e5-93b6-1df5d4ec49a7.png
 
