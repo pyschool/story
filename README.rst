@@ -4,7 +4,7 @@ Workshopper for PySchool
 
 -----
 
-|pypi| |unix_build| |windows_build| |osx_build| |coverage|
+|pypi| |build| |coverage|
 
 -----
 
