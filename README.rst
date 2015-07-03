@@ -37,14 +37,6 @@ Please see `LICENSE <https://github.com/pyschool/workshopper/blob/master/LICENSE
     :target: https://coveralls.io/r/pyschool/workshopper?branch=master
     :alt: Test coverage
 
-.. |unix_build| image:: https://img.shields.io/travis/pyschool/workshopper/master.svg?style=flat-square&label=unix%20build
+.. |build| image:: https://img.shields.io/travis/pyschool/workshopper/master.svg?style=flat-square&label=build
     :target: http://travis-ci.org/pyschool/workshopper
-    :alt: Build status of the master branch on Mac/Linux
-
-.. |windows_build|  image:: https://img.shields.io/appveyor/ci/pyschool/workshopper.svg?style=flat-square&label=windows%20build
-    :target: https://ci.appveyor.com/project/pyschool/workshopper
-    :alt: Build status of the master branch on Windows
-
-.. |osx_build|  image:: https://img.shields.io/appveyor/ci/pyschool/workshopper.svg?style=flat-square&label=osx%20build
-    :target: https://ci.appveyor.com/project/pyschool/workshopper
-    :alt: Build status of the master branch on OSX
+    :alt: Build status of the master branch
