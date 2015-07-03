@@ -1,44 +1,30 @@
 #!/usr/bin/env python
 
-import os
-import sys
 import codecs
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 import workshopper
 
 
-if sys.argv[-1] == 'publish':
-    os.system('python setup.py sdist upload')
-    sys.exit()
+def long_description():
+    with codecs.open('README.rst', encoding='utf8') as f:
+        readme = f.read()
+    with codecs.open('HISTORY.rst', encoding='utf8') as f:
+        history = f.read()
+    return readme + history
 
-packages = [
-    'workshopper',
-]
-
-requires = []
-
-with codecs.open('README.rst', 'r', 'utf-8') as f:
-    readme = f.read()
-with codecs.open('HISTORY.rst', 'r', 'utf-8') as f:
-    history = f.read()
 
 setup(
     name='workshopper',
     version=workshopper.__version__,
     description=workshopper.__doc__.strip(),
-    long_description=readme + '\n\n' + history,
+    long_description=long_description(),
     url='http://pyschool.github.io',
     download_url='https://github.com/pyschool/workshopper',
     author=workshopper.__author__,
     license=workshopper.__licence__,
-    packages=packages,
-    package_data={'': ['LICENSE', '*.rst']},
-    package_dir={'workshopper': 'workshopper'},
-    include_package_data=True,
-    install_requires=requires,
-    zip_safe=False,
+    packages=find_packages(),
     classifiers=(
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',

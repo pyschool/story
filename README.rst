@@ -4,7 +4,7 @@ Workshopper for PySchool
 
 -----
 
-|pypi| |unix_build| |windows_build| |coverage|
+|pypi| |unix_build| |windows_build| |osx_build| |coverage|
 
 -----
 
@@ -44,3 +44,7 @@ Please see `LICENSE <https://github.com/pyschool/workshopper/blob/master/LICENSE
 .. |windows_build|  image:: https://img.shields.io/appveyor/ci/pyschool/workshopper.svg?style=flat-square&label=windows%20build
     :target: https://ci.appveyor.com/project/pyschool/workshopper
     :alt: Build status of the master branch on Windows
+
+.. |osx_build|  image:: https://img.shields.io/appveyor/ci/pyschool/workshopper.svg?style=flat-square&label=osx%20build
+    :target: https://ci.appveyor.com/project/pyschool/workshopper
+    :alt: Build status of the master branch on OSX
