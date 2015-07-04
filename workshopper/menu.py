@@ -1,6 +1,14 @@
 class Menu(object):
 
-    pass
+    def __init__(self, workshop):
+        self.workshop = workshop
+
+    def show(self):
+        # TODO: draw menu
+        for problem in self.workshop.problems:
+            # problem.name and problem.title
+            pass
+        print('Drawing menu....')
 
 
 class Item(object):
@@ -34,10 +42,10 @@ class CommandItem(Item):
         pass
 
 
-class ExerciseItem(Item):
+class ProblemItem(Item):
 
-    def __init__(self, menu, exercise):
-        self.exercise = exercise
+    def __init__(self, menu, problem):
+        self.problem = problem
         super().__init__(menu)
 
     def select(self):
@@ -45,4 +53,4 @@ class ExerciseItem(Item):
 
     @property
     def completed(self):
-        return self.exercise.completed
+        return self.problem.completed

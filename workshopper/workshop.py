@@ -1,17 +1,10 @@
-from .commands import MenuCommand, VerifyCommand, HelpCommand, ExitCommand
+from .commands import CommandManager
+from .data import DataManager
+from .problems import ProblemManager
 
 
-class Workshop(object):
+class BaseWorkshop(ProblemManager, DataManager, CommandManager):
 
     title = None
-    languages = ['en']
-    commands = [
-        MenuCommand,
-        VerifyCommand,
-        HelpCommand,
-        ExitCommand,
-    ]
-    default_command = MenuCommand.name
-
-    def run(self):
-        pass
+    name = None
+    description = None
