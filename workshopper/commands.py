@@ -1,5 +1,5 @@
-import sys
 import argparse
+import sys
 
 from . import __version__
 from .menu import Menu
@@ -43,6 +43,7 @@ class VerifyCommand(BaseCommand):
     help = 'Verify the solution for the current problem.'
 
     def create_parser(self, parser):
+        super().create_parser(parser)
         parser.add_argument('file')
 
     def handle(self, args):
@@ -63,6 +64,7 @@ class SelectCommand(BaseCommand):
     help = 'Select a problem by name.'
 
     def create_parser(self, parser):
+        super().create_parser(parser)
         parser.add_argument('problem')
 
     def handle(self, args):
@@ -97,7 +99,7 @@ class ShowCommand(BaseCommand):
         if not problem:
             sys.stderr.write('Invalid problem: {}.\n'.format(current))
             sys.exit(1)
-        sys.stdout.write(problem.problem)
+        sys.stdout.write(problem.highlighted_problem)
 
 
 class SolutionCommand(BaseCommand):
@@ -134,14 +136,6 @@ class VersionCommand(BaseCommand):
         return __version__
 
 
-class ExitCommand(BaseCommand):
-
-    name = 'exit'
-
-    def handle(self, args):
-        sys.exit(0)
-
-
 class CommandManager(object):
 
     parser = None
@@ -156,7 +150,6 @@ class CommandManager(object):
         SolutionCommand,
         ResetCommand,
         HelpCommand,
-        ExitCommand,
     )
     default_command = MenuCommand.name
     version = __version__

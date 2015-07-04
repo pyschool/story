@@ -2,6 +2,8 @@ import codecs
 import inspect
 import os
 
+from .styles import highlight
+
 
 class BaseProblem(object):
 
@@ -38,6 +40,10 @@ class BaseProblem(object):
                 with codecs.open(file, encoding='utf-8') as f:
                     return f.read()
         raise Exception('Problem file not found')
+
+    @property
+    def highlighted_problem(self):
+        return highlight(self.problem)
 
     @property
     def solution(self):

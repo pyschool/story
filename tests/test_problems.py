@@ -7,5 +7,4 @@ class ExampleProblem(BaseProblem):
 
 
 def test_problem_name():
-    print(ExampleProblem(None).name)
-    assert 0 == 0
+    assert ExampleProblem(None).name == 'test_problems'

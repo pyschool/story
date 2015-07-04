@@ -1,6 +1,6 @@
-import os
 import codecs
 import json
+import os
 
 
 class DataManager(object):

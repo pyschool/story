@@ -1,8 +1,10 @@
-dist
-workshopper.egg-info
-build
-*.pyc
-*.egg
+*.egg-info
+*.pot
+*.py[co]
+__pycache__
+
 .tox
 .coverage
+dist/
+build/
 htmlcov
