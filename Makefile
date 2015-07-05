@@ -1,28 +1,28 @@
-VERSION=$(shell grep __version__ workshopper/__init__.py)
+VERSION=$(shell grep __version__ story/__init__.py)
 REQUIREMENTS="requirements-dev.pip"
 TAG="\n\n\033[0;32m\#\#\# "
 END=" \#\#\# \033[0m\n"
 
 all: test
 
-uninstall-workshopper:
-	@echo $(TAG)Removing existing installation of Workshopper$(END)
-	- pip uninstall --yes workshopper >/dev/null
+uninstall-story:
+	@echo $(TAG)Removing existing installation of Story$(END)
+	- pip uninstall --yes story >/dev/null
 	@echo
 
-uninstall-all: uninstall-workshopper
+uninstall-all: uninstall-story
 	- pip uninstall --yes -r $(REQUIREMENTS)
 
-init: uninstall-workshopper
+init: uninstall-story
 	@echo $(TAG)Installing dev requirements$(END)
 	pip install --upgrade -r $(REQUIREMENTS)
-	@echo $(TAG)Installing Workshopper$(END)
+	@echo $(TAG)Installing Story$(END)
 	pip install --upgrade --editable .
 	@echo
 
 test: init
 	@echo $(TAG)Running tests in on current Python with coverage $(END)
-	py.test --cov ./workshopper --cov ./tests --doctest-modules --verbose ./workshopper ./tests
+	py.test --cov ./story --cov ./tests --doctest-modules --verbose ./story ./tests
 	@echo
 
 test-tox: init
@@ -33,13 +33,13 @@ test-tox: init
 test-dist: test-sdist test-bdist-wheel
 	@echo
 
-test-sdist: clean uninstall-workshopper
+test-sdist: clean uninstall-story
 	@echo $(TAG)Testing sdist build an installation$(END)
 	python setup.py sdist
 	pip install --force-reinstall --upgrade dist/*.gz
 	@echo
 
-test-bdist-wheel: clean uninstall-workshopper
+test-bdist-wheel: clean uninstall-story
 	@echo $(TAG)Testing wheel build an installation$(END)
 	python setup.py bdist_wheel
 	pip install --force-reinstall --upgrade dist/*.whl

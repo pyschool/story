@@ -1,7 +1,7 @@
 import pytest
 
-from workshopper import __version__
-from workshopper.commands import BaseCommand, CommandManager, VerifyCommand
+from story import __version__
+from story.commands import BaseCommand, CommandManager, VerifyCommand
 
 
 class TestCommandManager(object):

@@ -1,5 +1,5 @@
 """
-Workshopper - PySchool
+Story - PySchool
 """
 
 __author__ = 'PySchool'

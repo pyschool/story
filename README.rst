@@ -1,5 +1,5 @@
-Workshopper for PySchool
-========================
+Story for PySchool
+==================
 
 |pypi| |build| |coverage|
 
@@ -10,31 +10,31 @@ Workshopper for PySchool
 Contribute
 ==========
 
-Please see `CONTRIBUTING <https://github.com/pyschool/workshopper/blob/master/CONTRIBUTING.rst>`_.
+Please see `CONTRIBUTING <https://github.com/pyschool/story/blob/master/CONTRIBUTING.rst>`_.
 
 
 ==========
 Change Log
 ==========
 
-Please see `HISTORY <https://github.com/pyschool/workshopper/blob/master/HISTORY.rst>`_.
+Please see `HISTORY <https://github.com/pyschool/story/blob/master/HISTORY.rst>`_.
 
 
 =======
 Licence
 =======
 
-Please see `LICENSE <https://github.com/pyschool/workshopper/blob/master/LICENSE>`_.
+Please see `LICENSE <https://github.com/pyschool/story/blob/master/LICENSE>`_.
 
 
-.. |pypi| image:: https://img.shields.io/pypi/v/workshopper.svg?style=flat-square&label=latest%20version
-    :target: https://pypi.python.org/pypi/workshopper
+.. |pypi| image:: https://img.shields.io/pypi/v/story.svg?style=flat-square&label=latest%20version
+    :target: https://pypi.python.org/pypi/story
     :alt: Latest version released on PyPi
 
-.. |coverage| image:: https://img.shields.io/coveralls/pyschool/workshopper/master.svg?style=flat-square
-    :target: https://coveralls.io/r/pyschool/workshopper?branch=master
+.. |coverage| image:: https://img.shields.io/coveralls/pyschool/story/master.svg?style=flat-square
+    :target: https://coveralls.io/r/pyschool/story?branch=master
     :alt: Test coverage
 
-.. |build| image:: https://img.shields.io/travis/pyschool/workshopper/master.svg?style=flat-square&label=build
-    :target: http://travis-ci.org/pyschool/workshopper
+.. |build| image:: https://img.shields.io/travis/pyschool/story/master.svg?style=flat-square&label=build
+    :target: http://travis-ci.org/pyschool/story
     :alt: Build status of the master branch

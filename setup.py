@@ -4,7 +4,7 @@ import codecs
 
 from setuptools import find_packages, setup
 
-import workshopper
+import story
 
 
 def long_description():
@@ -16,14 +16,14 @@ def long_description():
 
 
 setup(
-    name='workshopper',
-    version=workshopper.__version__,
-    description=workshopper.__doc__.strip(),
+    name='story',
+    version=story.__version__,
+    description=story.__doc__.strip(),
     long_description=long_description(),
     url='http://pyschool.github.io',
-    download_url='https://github.com/pyschool/workshopper',
-    author=workshopper.__author__,
-    license=workshopper.__licence__,
+    download_url='https://github.com/pyschool/story',
+    author=story.__author__,
+    license=story.__licence__,
     packages=find_packages(),
     classifiers=(
         'Development Status :: 5 - Production/Stable',
