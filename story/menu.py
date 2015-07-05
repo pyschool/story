@@ -15,27 +15,27 @@ class Menu(object):
     actionable_count = 0
     selected_index = 0
 
-    def __init__(self, workshop):
-        self.workshop = workshop
+    def __init__(self, story):
+        self.story = story
         self.padding_y = 2
         self.padding_x = 3
 
-        # GUI canvas initialization.
+        # Screen initialization.
         self.screen = curses.initscr()
         self.screen.keypad(True)
 
         curses.noecho()
         curses.start_color()
 
-        # Color definitions.
+        # Colors definition.
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
 
     def show(self):
         position = 0
 
         # Exercises.
-        for problem in self.problems:
-            item = ProblemItem(self, problem, position)
+        for adventure in self.adventures:
+            item = AdventureItem(self, adventure, position)
             self.items.append(item)
             self.actionable_items.append(item)
 
@@ -108,8 +108,8 @@ class Menu(object):
         self.running = False
 
     @property
-    def problems(self):
-        return self.workshop.problems
+    def adventures(self):
+        return self.story.adventures
 
     @property
     def selected_item(self):
@@ -161,18 +161,18 @@ class CommandItem(Item):
         pass
 
 
-class ProblemItem(Item):
+class AdventureItem(Item):
 
-    def __init__(self, menu, problem, position):
-        self.problem = problem
-        super().__init__(menu, problem.title, position)
+    def __init__(self, menu, adventure, position):
+        self.adventure = adventure
+        super().__init__(menu, adventure.title, position)
 
     def select(self):
         pass
 
     @property
     def completed(self):
-        return self.problem.completed
+        return self.adventure.completed
 
 
 class HelpItem(CommandItem):
@@ -180,6 +180,13 @@ class HelpItem(CommandItem):
 
     def __init__(self, menu, position):
         super().__init__(menu, 'Help', position)
+
+    def select(self):
+        self.menu.exit()
+        manager = self.menu.story
+
+        from .commands import HelpCommand
+        HelpCommand(manager).handle()
 
 
 class ExitItem(Item):

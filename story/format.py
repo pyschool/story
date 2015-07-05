@@ -5,7 +5,7 @@ import pygments
 from pygments.formatters.other import NullFormatter
 from pygments.formatters.terminal import TerminalFormatter
 from pygments.formatters.terminal256 import Terminal256Formatter
-from pygments.lexers import guess_lexer
+from pygments.lexers.markup import RstLexer
 from pygments.style import Style
 from pygments.token import (Comment, Generic, Keyword, Name, Number, Operator,
                             String, Token)
@@ -117,5 +117,5 @@ else:
 
 def highlight(content):
     formatter = Formatter(style=Solarized256Style)
-    lexer = guess_lexer(content)
+    lexer = RstLexer(handlecodeblocks=True)
     return pygments.highlight(content, lexer, formatter)
