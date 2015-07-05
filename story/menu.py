@@ -30,6 +30,14 @@ class Menu(object):
         # Colors definition.
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
 
+    @property
+    def adventures(self):
+        return self.story.adventures
+
+    @property
+    def selected_item(self):
+        return self.actionable_items[self.selected_index]
+
     def show(self):
         position = 0
 
@@ -47,6 +55,8 @@ class Menu(object):
             ExitItem(self, position + 1),
         ]
 
+        default_items[0].select()
+
         for item in default_items:
             self.items.append(item)
             self.actionable_items.append(item)
@@ -56,8 +66,6 @@ class Menu(object):
         while (self.running):
             self.render_items()
             self.handle_key_press()
-
-        curses.endwin()
 
     def handle_key_press(self):
         key = self.screen.getch()
@@ -106,14 +114,6 @@ class Menu(object):
 
     def exit(self):
         self.running = False
-
-    @property
-    def adventures(self):
-        return self.story.adventures
-
-    @property
-    def selected_item(self):
-        return self.actionable_items[self.selected_index]
 
 
 class Item(object):
@@ -167,26 +167,26 @@ class AdventureItem(Item):
         self.adventure = adventure
         super().__init__(menu, adventure.title, position)
 
-    def select(self):
-        pass
-
     @property
     def completed(self):
         return self.adventure.completed
 
+    def select(self):
+        pass
+
+
 
 class HelpItem(CommandItem):
-    command = 'help'
+    command = 'HelpCommand'
 
     def __init__(self, menu, position):
         super().__init__(menu, 'Help', position)
 
     def select(self):
         self.menu.exit()
-        manager = self.menu.story
 
         from .commands import HelpCommand
-        HelpCommand(manager).handle()
+        HelpCommand(self.menu.story).handle()
 
 
 class ExitItem(Item):
