@@ -14,11 +14,12 @@ class Menu(object):
     actionable_items = []
     actionable_count = 0
     selected_index = 0
+    padding_y = 2
+    padding_x = 3
+    width = 50
 
     def __init__(self, story):
         self.story = story
-        self.padding_y = 2
-        self.padding_x = 3
 
         # Screen initialization.
         self.screen = curses.initscr()
@@ -29,6 +30,15 @@ class Menu(object):
 
         # Colors definition.
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
+
+    @property
+    def height(self):
+        height = 0
+
+        for item in self.items:
+            height += 1
+
+        return height
 
     @property
     def adventures(self):
@@ -104,15 +114,24 @@ class Menu(object):
         self.selected_item.set_style(curses.color_pair(1))
 
     def render_items(self):
-        self.screen.clear()
-        self.screen.border(0)
+        # Menu container.
+        self.container = curses.newwin(
+            self.height + self.padding_y * 2,
+            self.width + self.padding_x * 2,
+            0,  # X coord.
+            0,  # Y coord.
+        )
+        self.container.border(0)
 
         for item in self.items:
             item.render()
 
+        self.container.refresh()
+
     def exit(self):
+        if (self.running):
+            curses.endwin()
         self.running = False
-        curses.endwin()
 
 
 class Item(object):
@@ -136,10 +155,12 @@ class Item(object):
         raise NotImplemented
 
     def render(self):
-        self.menu.screen.addstr(
+        text = self.text.upper() + ' ' * (self.menu.width - len(self.text))
+
+        self.menu.container.addstr(
             self.position + self.menu.padding_y,
             self.menu.padding_x,
-            self.text.upper(),
+            text,
             self.style
         )
 
@@ -147,6 +168,11 @@ class Item(object):
 class LineItem(Item):
 
     selectable = False
+    style = curses.A_UNDERLINE
+    text = ''
+
+    def __init__(self, menu, position):
+        self.position = position
 
 
 class TextItem(Item):
