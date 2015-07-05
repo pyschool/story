@@ -55,8 +55,6 @@ class Menu(object):
             ExitItem(self, position + 1),
         ]
 
-        default_items[0].select()
-
         for item in default_items:
             self.items.append(item)
             self.actionable_items.append(item)
@@ -114,6 +112,7 @@ class Menu(object):
 
     def exit(self):
         self.running = False
+        curses.endwin()
 
 
 class Item(object):
@@ -157,6 +156,10 @@ class TextItem(Item):
 
 class CommandItem(Item):
 
+    def __init__(self, menu, position):
+        self.menu = menu
+        self.position = position
+
     def select(self):
         pass
 
@@ -172,15 +175,12 @@ class AdventureItem(Item):
         return self.adventure.completed
 
     def select(self):
-        pass
-
+        self.menu.exit()
+        print(self.adventure.problem_formatted)
 
 
 class HelpItem(CommandItem):
-    command = 'HelpCommand'
-
-    def __init__(self, menu, position):
-        super().__init__(menu, 'Help', position)
+    text = 'Help'
 
     def select(self):
         self.menu.exit()
