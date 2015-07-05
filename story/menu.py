@@ -16,6 +16,8 @@ class Menu(object):
     selected_index = 0
     padding_y = 2
     padding_x = 3
+    x = 2
+    y = 2
     width = 50
 
     def __init__(self, story):
@@ -28,9 +30,11 @@ class Menu(object):
         curses.noecho()
         curses.start_color()
         curses.curs_set(0)
+        self.screen.refresh()
 
         # Colors definition.
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
+        curses.init_pair(2, curses.COLOR_BLUE, curses.COLOR_WHITE)
 
     @property
     def height(self):
@@ -116,7 +120,7 @@ class Menu(object):
             self.selected_index = len(self.actionable_items) - 1
 
         # Highlight the just selected item.
-        self.selected_item.set_style(curses.color_pair(1))
+        self.selected_item.set_style(curses.color_pair(2))
 
     def select_next(self):
         # Unhighlight the previous selection.
@@ -128,17 +132,17 @@ class Menu(object):
             self.selected_index = 0
 
         # Highlight the just selected item.
-        self.selected_item.set_style(curses.color_pair(1))
+        self.selected_item.set_style(curses.color_pair(2))
 
     def render_items(self):
         # Menu container.
         self.container = curses.newwin(
             self.height + self.padding_y * 2,
             self.width + self.padding_x * 2,
-            0,  # X coord.
-            0,  # Y coord.
+            self.x,
+            self.y,
         )
-        self.container.border(0)
+        self.container.bkgd(curses.color_pair(1))
 
         for item in self.items:
             item.render()
