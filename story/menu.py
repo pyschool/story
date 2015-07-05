@@ -27,6 +27,7 @@ class Menu(object):
 
         curses.noecho()
         curses.start_color()
+        curses.curs_set(0)
 
         # Colors definition.
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
@@ -36,7 +37,7 @@ class Menu(object):
         height = 0
 
         for item in self.items:
-            height += 1
+            height += item.size
 
         return height
 
@@ -49,7 +50,20 @@ class Menu(object):
         return self.actionable_items[self.selected_index]
 
     def show(self):
+        # Menu header.
+        title = TextItem(self, self.story.title.upper(), 0)
+        usage = TextItem(self, 'Select an exercise and hit ENTER to begin', 1)
+
+        self.items.append(title)
+        self.items.append(usage)
+        self.items.append(LineItem(self, 2))
+
+        title.set_style(curses.A_BOLD)
+
         position = 0
+
+        for item in self.items:
+            position += item.size
 
         # Exercises.
         for adventure in self.adventures:
@@ -60,10 +74,13 @@ class Menu(object):
             position += 1   # Position of the current item in the menu.
             self.actionable_count += 1  # Number of actionable items.
 
+        self.items.append(LineItem(self, position))
+
         default_items = [
-            HelpItem(self, position),
-            ExitItem(self, position + 1),
+            HelpItem(self, position + 2),
+            ExitItem(self, position + 3),
         ]
+
 
         for item in default_items:
             self.items.append(item)
@@ -91,7 +108,7 @@ class Menu(object):
 
     def select_prev(self):
         # Unhighlight the previous selection.
-        self.selected_item.set_style(curses.A_NORMAL)
+        self.selected_item.set_style(self.selected_item.default_style)
 
         self.selected_index -= 1
 
@@ -103,7 +120,7 @@ class Menu(object):
 
     def select_next(self):
         # Unhighlight the previous selection.
-        self.selected_item.set_style(curses.A_NORMAL)
+        self.selected_item.set_style(self.selected_item.default_style)
 
         self.selected_index += 1
 
@@ -138,10 +155,12 @@ class Item(object):
 
     selectable = True
     style = curses.A_NORMAL
+    default_style = curses.A_NORMAL
+    size = 1
 
     def __init__(self, menu, text, position):
         self.menu = menu
-        self.text = text
+        self.text = text.upper()
         self.position = position
 
     @property
@@ -155,7 +174,7 @@ class Item(object):
         raise NotImplemented
 
     def render(self):
-        text = self.text.upper() + ' ' * (self.menu.width - len(self.text))
+        text = self.text + ' ' * (self.menu.width - len(self.text))
 
         self.menu.container.addstr(
             self.position + self.menu.padding_y,
@@ -169,15 +188,21 @@ class LineItem(Item):
 
     selectable = False
     style = curses.A_UNDERLINE
-    text = ''
+    size = 2
 
     def __init__(self, menu, position):
+        self.menu = menu
         self.position = position
+        self.text = ' ' * menu.width
 
 
 class TextItem(Item):
 
     selectable = False
+
+    def __init__(self, menu, text, position):
+        super().__init__(menu, text, position)
+        self.text = text
 
 
 class CommandItem(Item):
@@ -194,7 +219,7 @@ class AdventureItem(Item):
 
     def __init__(self, menu, adventure, position):
         self.adventure = adventure
-        super().__init__(menu, adventure.title, position)
+        super().__init__(menu, '» ' + adventure.title, position)
 
     @property
     def completed(self):
@@ -206,7 +231,9 @@ class AdventureItem(Item):
 
 
 class HelpItem(CommandItem):
-    text = 'Help'
+
+    text = 'HELP'
+    default_style = curses.A_BOLD
 
     def select(self):
         self.menu.exit()
@@ -216,6 +243,9 @@ class HelpItem(CommandItem):
 
 
 class ExitItem(Item):
+
+    style = curses.A_BOLD
+    default_style = curses.A_BOLD
 
     def __init__(self, menu, position):
         super().__init__(menu, 'Exit', position)
