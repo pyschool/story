@@ -1,4 +1,4 @@
-from story.adventure import BaseAdventure
+from story.adventures import BaseAdventure
 
 
 class ExampleAdventure(BaseAdventure):
