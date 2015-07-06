@@ -160,6 +160,7 @@ class Item(object):
     selectable = True
     style = curses.A_NORMAL
     default_style = curses.A_NORMAL
+    padding = 1
     size = 1
 
     def __init__(self, menu, text, position):
@@ -171,19 +172,28 @@ class Item(object):
     def completed(self):
         return False
 
+    @property
+    def padded_width(self):
+        return self.menu.width - self.padding * 2
+
     def set_style(self, style):
         self.style = style
 
     def select(self):
         raise NotImplemented
 
+    def get_text(self):
+        spaces = (self.padded_width - len(self.text)) * ' '
+        return self.text + spaces
+
     def render(self):
-        text = self.text + ' ' * (self.menu.width - len(self.text))
+        text = self.get_text()
+        padding = ' ' * self.padding
 
         self.menu.container.addstr(
             self.position + self.menu.padding_y,
             self.menu.padding_x,
-            text,
+            padding + text + padding,
             self.style
         )
 
@@ -192,12 +202,15 @@ class LineItem(Item):
 
     selectable = False
     style = curses.A_UNDERLINE
+    padding = 0
     size = 2
 
     def __init__(self, menu, position):
         self.menu = menu
         self.position = position
-        self.text = ' ' * menu.width
+
+    def get_text(self):
+        return self.menu.width * ' '
 
 
 class TextItem(Item):
@@ -215,6 +228,10 @@ class CommandItem(Item):
         self.menu = menu
         self.position = position
 
+    def get_text(self):
+        spaces = (self.padded_width - len(self.text)) * ' '
+        return self.text.upper() + spaces
+
     def select(self):
         pass
 
@@ -229,6 +246,15 @@ class AdventureItem(Item):
     def completed(self):
         return self.adventure.completed
 
+    def get_text(self):
+        if (self.completed):
+            suffix = '[COMPLETED]'
+        else:
+            suffix = ''
+
+        spaces = (self.padded_width - len(self.text) - len(suffix)) * ' '
+        return self.text.upper() + spaces + suffix
+
     def select(self):
         self.menu.exit()
         print(self.adventure.problem_formatted)
@@ -236,7 +262,8 @@ class AdventureItem(Item):
 
 class HelpItem(CommandItem):
 
-    text = 'HELP'
+    text = 'Help'
+    style = curses.A_BOLD
     default_style = curses.A_BOLD
 
     def select(self):
@@ -246,13 +273,11 @@ class HelpItem(CommandItem):
         HelpCommand(self.menu.story).handle()
 
 
-class ExitItem(Item):
+class ExitItem(CommandItem):
 
+    text = 'Exit'
     style = curses.A_BOLD
     default_style = curses.A_BOLD
-
-    def __init__(self, menu, position):
-        super().__init__(menu, 'Exit', position)
 
     def select(self):
         self.menu.exit()
