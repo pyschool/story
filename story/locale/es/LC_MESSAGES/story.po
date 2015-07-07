@@ -1,0 +1,134 @@
+# Spanish translations for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-07-07 10:44-0300\n"
+"PO-Revision-Date: 2015-07-07 10:37-0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 1.3\n"
+
+#: story/adventures.py:112
+msgid ""
+"\n"
+"â\n"
+"{story_title}: {adventure_title}\n"
+"=============================================================================="
+"\n"
+"\n"
+"{adventure_problem}\n"
+"\n"
+"------------------------------------------------------------------------------"
+"\n"
+"\n"
+" Â» To print these instructions again, run: {script} print\n"
+" Â» To execute your program in a test environment, run: {script} run "
+"program.py\n"
+" Â» To verify your program, run: {script} verify program.py\n"
+" Â» For help run: {script} help\n"
+"â\n"
+msgstr ""
+
+#: story/adventures.py:129
+msgid ""
+"\n"
+"â\n"
+"{story_title}: {adventure_title} [SOLUTION]\n"
+"=============================================================================="
+"\n"
+"\n"
+"{adventure_solution}\n"
+"\n"
+"------------------------------------------------------------------------------"
+"\n"
+"\n"
+" Â» To print these instructions again, run: {script} print\n"
+" Â» To execute your program in a test environment, run: {script} run "
+"program.py\n"
+" Â» To verify your program, run: {script} verify program.py\n"
+" Â» For help run: {script} help\n"
+"â\n"
+msgstr ""
+
+#: story/commands.py:28
+msgid "Show a menu to interactively select an adventure."
+msgstr ""
+
+#: story/commands.py:37
+msgid "Show a newline-separated list of all the adventures."
+msgstr ""
+
+#: story/commands.py:51
+msgid "Select an adventure."
+msgstr ""
+
+#: story/commands.py:64
+msgid "Show the currently selected adventure."
+msgstr ""
+
+#: story/commands.py:69 story/commands.py:87 story/commands.py:136
+#: story/commands.py:153
+msgid "Please select an adventure first.\n"
+msgstr "Por favor seleccione una aventura primero.\n"
+
+#: story/commands.py:73 story/commands.py:91 story/commands.py:140
+#: story/commands.py:157
+msgid "Invalid adventure: {}.\n"
+msgstr ""
+
+#: story/commands.py:82
+msgid "Print the adventure."
+msgstr ""
+
+#: story/commands.py:99
+msgid ""
+"Print the instructions for the next incomplete adventure after the "
+"currently selected adventure."
+msgstr ""
+
+#: story/commands.py:103 story/commands.py:121
+msgid "Not implemented.\n"
+msgstr ""
+
+#: story/commands.py:109
+msgid "Reset completed adventure progress."
+msgstr ""
+
+#: story/commands.py:118
+msgid "Run your program against the selected input."
+msgstr ""
+
+#: story/commands.py:127
+msgid "Verify the solution for the current adventure."
+msgstr ""
+
+#: story/commands.py:148
+msgid "Print the solution for an adventure."
+msgstr ""
+
+#: story/commands.py:214
+msgid "Change the system to the specified language."
+msgstr ""
+
+#: story/menu.py:60
+msgid "Select an exercise and hit ENTER to begin"
+msgstr ""
+
+#: story/menu.py:265
+msgid "Help"
+msgstr "Ayuda"
+
+#: story/menu.py:278
+msgid "Exit"
+msgstr "Salir"
+

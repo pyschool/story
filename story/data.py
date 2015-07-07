@@ -1,12 +1,28 @@
 import codecs
 import json
 import os
+import gettext
+
+
+domain = 'story'
+localedir = os.path.join(os.path.dirname(__file__), 'locale/')
+gettext.bindtextdomain(domain, localedir)
+translation = gettext.translation(domain, localedir, fallback=True)
+_ = lambda msg: gettext.dgettext(domain, msg)
+
+
+def set_language(language):
+    os.environ['LANG'] = language
 
 
 class DataManager(object):
 
-    filename = '.pyschool'
+    filename = os.path.expanduser('~/.pyschool')
     _data = None
+
+    def __init__(self, *args, **kwargs):
+        set_language(self.language)
+        super().__init__(*args, **kwargs)
 
     def get_filename(self):
         return os.path.join(os.getcwd(), self.filename)
@@ -42,17 +58,19 @@ class DataManager(object):
 
     data = property(get_data, set_data)
 
-    def set_language(self, value):
-        self.data['language'] = value
+    def set_language(self, language):
+        self.data['language'] = language
         self.save()
+        set_language(self.language)
 
     def get_language(self):
         return self.data.get('language', self.default_language)
 
     language = property(get_language, set_language)
 
-    def set_current(self, value):
-        self.data['current'] = value
+    def set_current(self, language):
+        set_language(language)
+        self.data['current'] = language
         self.save()
 
     def get_current(self):

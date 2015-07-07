@@ -1,7 +1,9 @@
 import curses
+from .data import _
 
 
 class Keys(object):
+
     ESCAPE = 27
     UP_ARROW = 259
     DOWN_ARROW = 258
@@ -9,6 +11,7 @@ class Keys(object):
 
 
 class Menu(object):
+
     running = True
     items = []
     actionable_items = []
@@ -56,7 +59,8 @@ class Menu(object):
     def show(self):
         # Menu header.
         title = TextItem(self, self.story.title.upper(), 0)
-        usage = TextItem(self, 'Select an exercise and hit ENTER to begin', 1)
+        usage = TextItem(self, _('Select an exercise and hit ENTER to begin'),
+                         1)
 
         self.items.append(title)
         self.items.append(usage)
@@ -85,12 +89,10 @@ class Menu(object):
             ExitItem(self, position + 3),
         ]
 
-
         for item in default_items:
             self.items.append(item)
             self.actionable_items.append(item)
             self.actionable_count += 1
-
 
         while (self.running):
             self.render_items()
@@ -108,7 +110,7 @@ class Menu(object):
         selected_action = actions.get(key)
 
         if (selected_action):
-           selected_action()
+            selected_action()
 
     def select_prev(self):
         # Unhighlight the previous selection.
@@ -262,7 +264,7 @@ class AdventureItem(Item):
 
 class HelpItem(CommandItem):
 
-    text = 'Help'
+    text = _('Help')
     style = curses.A_BOLD
     default_style = curses.A_BOLD
 
@@ -275,7 +277,7 @@ class HelpItem(CommandItem):
 
 class ExitItem(CommandItem):
 
-    text = 'Exit'
+    text = _('Exit')
     style = curses.A_BOLD
     default_style = curses.A_BOLD
 

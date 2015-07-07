@@ -3,6 +3,7 @@ import sys
 
 from . import __version__
 from .menu import Menu
+from .data import _
 
 
 class BaseCommand(object):
@@ -24,7 +25,7 @@ class BaseCommand(object):
 class MenuCommand(BaseCommand):
 
     name = 'menu'
-    help = 'Show a menu to interactively select an adventure.'
+    help = _('Show a menu to interactively select an adventure.')
 
     def handle(self, args):
         Menu(self.manager).show()
@@ -33,7 +34,7 @@ class MenuCommand(BaseCommand):
 class ListCommand(BaseCommand):
 
     name = 'list'
-    help = 'Show a newline-separated list of all the adventures.'
+    help = _('Show a newline-separated list of all the adventures.')
 
     def handle(self, args):
         for adventure in self.manager.adventures:
@@ -47,7 +48,7 @@ class ListCommand(BaseCommand):
 class SelectCommand(BaseCommand):
 
     name = 'select'
-    help = 'Select an adventure.'
+    help = _('Select an adventure.')
 
     def create_parser(self, parser):
         super().create_parser(parser)
@@ -60,16 +61,16 @@ class SelectCommand(BaseCommand):
 class CurrentCommand(BaseCommand):
 
     name = 'current'
-    help = 'Show the currently selected adventure.'
+    help = _('Show the currently selected adventure.')
 
     def handle(self, args):
         current = self.manager.current
         if current is None:
-            sys.stderr.write('Please select an adventure first.\n')
+            sys.stderr.write(_('Please select an adventure first.\n'))
             sys.exit(1)
         adventure = self.manager.get_adventure(current)
         if not adventure:
-            sys.stderr.write('Invalid adventure: {}.\n'.format(current))
+            sys.stderr.write(_('Invalid adventure: {}.\n').format(current))
             sys.exit(1)
         sys.stdout.write('{}\n'.format(adventure.name))
         sys.exit(0)
@@ -78,16 +79,16 @@ class CurrentCommand(BaseCommand):
 class PrintCommand(BaseCommand):
 
     name = 'print'
-    help = 'Print the adventure.'
+    help = _('Print the adventure.')
 
     def handle(self, args):
         current = self.manager.current
         if current is None:
-            sys.stderr.write('Please select an adventure first.\n')
+            sys.stderr.write(_('Please select an adventure first.\n'))
             sys.exit(1)
         adventure = self.manager.get_adventure(current)
         if not adventure:
-            sys.stderr.write('Invalid adventure: {}.\n'.format(current))
+            sys.stderr.write(_('Invalid adventure: {}.\n').format(current))
             sys.exit(1)
         sys.stdout.write(adventure.problem_formatted)
 
@@ -95,17 +96,17 @@ class PrintCommand(BaseCommand):
 class NextCommand(BaseCommand):
 
     name = 'next'
-    help = 'Print the instructions for the next incomplete adventure' + \
-        ' after the currently selected adventure.'
+    help = _('Print the instructions for the next incomplete adventure '
+             'after the currently selected adventure.')
 
     def handle(self, args):
-        sys.stdout.write('Not implemented.\n')
+        sys.stdout.write(_('Not implemented.\n'))
 
 
 class ResetCommand(BaseCommand):
 
     name = 'reset'
-    help = 'Reset completed adventure progress.'
+    help = _('Reset completed adventure progress.')
 
     def handle(self, args):
         self.manager.data = {}
@@ -114,16 +115,16 @@ class ResetCommand(BaseCommand):
 class RunCommand(BaseCommand):
 
     name = 'run'
-    help = 'Run your program against the selected input.'
+    help = _('Run your program against the selected input.')
 
     def handle(self, args):
-        sys.stdout.write('Not implemented.\n')
+        sys.stdout.write(_('Not implemented.\n'))
 
 
 class VerifyCommand(BaseCommand):
 
     name = 'verify'
-    help = 'Verify the solution for the current adventure.'
+    help = _('Verify the solution for the current adventure.')
 
     def create_parser(self, parser):
         super().create_parser(parser)
@@ -132,11 +133,11 @@ class VerifyCommand(BaseCommand):
     def handle(self, args):
         current = self.manager.current
         if current is None:
-            sys.stderr.write('Please select an adventure first.\n')
+            sys.stderr.write(_('Please select an adventure first.\n'))
             sys.exit(1)
         adventure = self.manager.get_adventure(current)
         if not adventure:
-            sys.stderr.write('Invalid adventure: {}.\n'.format(current))
+            sys.stderr.write(_('Invalid adventure: {}.\n').format(current))
             sys.exit(1)
         sys.exit(adventure.verify(args.file))
 
@@ -144,16 +145,16 @@ class VerifyCommand(BaseCommand):
 class SolutionCommand(BaseCommand):
 
     name = 'solution'
-    help = 'Print the solution for an adventure.'
+    help = _('Print the solution for an adventure.')
 
     def handle(self, args):
         current = self.manager.current
         if current is None:
-            sys.stderr.write('Please select an adventure first.\n')
+            sys.stderr.write(_('Please select an adventure first.\n'))
             sys.exit(1)
         adventure = self.manager.get_adventure(current)
         if not adventure:
-            sys.stderr.write('Invalid adventure: {}.\n'.format(current))
+            sys.stderr.write(_('Invalid adventure: {}.\n').format(current))
             sys.exit(1)
         sys.stdout.write(adventure.solution_formatted)
 
@@ -210,7 +211,7 @@ class CommandManager(object):
                 version=self.get_version())
             parser.add_argument(
                 '-l', '--language', action='store',
-                help='Change the system to the specified language.')
+                help=_('Change the system to the specified language.'))
             subparsers = parser.add_subparsers()
             for command in self.commands:
                 subparser = subparsers.add_parser(

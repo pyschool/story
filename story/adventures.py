@@ -3,10 +3,7 @@ import inspect
 import os
 
 from .format import highlight
-
-
-# TODO: Implment i18n
-_ = lambda x: x
+from .data import _
 
 
 class BaseAdventure(object):
@@ -79,7 +76,6 @@ class BaseAdventure(object):
         context = self.get_context()
         context['adventure_solution'] = self.solution.format(**context)
         return highlight(solution_wrapper.format(**context))
-
 
     def verify(self, file):
         try:
