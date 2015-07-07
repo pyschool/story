@@ -24,12 +24,9 @@ class DataManager(object):
         set_language(self.language)
         super().__init__(*args, **kwargs)
 
-    def get_filename(self):
-        return os.path.join(os.getcwd(), self.filename)
-
     def load(self):
         if self._data is None:
-            filename = self.get_filename()
+            filename = self.filename
             if not os.path.exists(filename):
                 self._data = {}
             else:
@@ -42,7 +39,7 @@ class DataManager(object):
         return self._data
 
     def save(self):
-        with codecs.open(self.get_filename(), 'w', encoding='utf8') as f:
+        with codecs.open(self.filename, 'w+', encoding='utf8') as f:
             f.write(json.dumps(self._data))
 
     def set_data(self, value):
