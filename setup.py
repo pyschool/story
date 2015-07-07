@@ -25,6 +25,9 @@ setup(
     author=story.__author__,
     license=story.__licence__,
     packages=find_packages(),
+    install_requires=[
+        'pygments',
+    ],
     classifiers=(
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
