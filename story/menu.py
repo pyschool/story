@@ -257,6 +257,7 @@ class AdventureItem(Item):
 
     def select(self):
         self.menu.exit()
+        self.menu.story.set_current(self.adventure.name)
         print(self.adventure.problem_formatted)
 
 
