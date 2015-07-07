@@ -1,6 +1,7 @@
 import codecs
 import json
 import os
+import getpass
 
 
 class DataManager(object):
@@ -9,7 +10,7 @@ class DataManager(object):
     _data = None
 
     def get_filename(self):
-        return os.path.join(os.getcwd(), self.filename)
+        return os.path.join('/home/', getpass.getuser(), self.filename)
 
     def load(self):
         if self._data is None:
@@ -26,7 +27,7 @@ class DataManager(object):
         return self._data
 
     def save(self):
-        with codecs.open(self.get_filename(), 'w', encoding='utf8') as f:
+        with codecs.open(self.get_filename(), 'w+', encoding='utf8') as f:
             f.write(json.dumps(self._data))
 
     def set_data(self, value):
