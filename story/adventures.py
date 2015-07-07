@@ -80,12 +80,19 @@ class BaseAdventure(object):
         context['adventure_solution'] = self.solution.format(**context)
         return highlight(solution_wrapper.format(**context))
 
+    @property
+    def test_formatted(self):
+        if (self.completed):
+            return 'Good job! You\'ve completed the adventure'
+        else:
+            return 'It didn\'t work. Try again.'
 
     def verify(self, file):
         try:
             self.test(file)
             self.manager.completed = self.name
             self.manager.current = None
+            print(self.test_formatted)
             return 0
         except AssertionError:
             raise
