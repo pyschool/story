@@ -12,7 +12,7 @@ _ = lambda msg: gettext.dgettext(domain, msg)
 
 
 def set_language(language):
-    os.environ['LANG'] = language
+    os.environ['LANG'] = str(language)
 
 
 class DataManager(object):
