@@ -6,6 +6,11 @@ from .format import highlight
 from .data import _
 
 
+class AdventureVerificationError(Exception):
+
+    pass
+
+
 class BaseAdventure(object):
 
     files = [
