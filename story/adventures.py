@@ -94,8 +94,8 @@ class BaseAdventure(object):
             self.manager.current = None
             print(self.test_formatted)
             return 0
-        except AssertionError:
-            raise
+        except AdventureVerificationError as e:
+            print(str(e))
 
     def test(self, file):
         pass
