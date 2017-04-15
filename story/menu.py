@@ -94,6 +94,9 @@ class Menu(object):
             self.actionable_items.append(item)
             self.actionable_count += 1
 
+        # Highlight the item selected by default
+        self.selected_item.set_style(curses.color_pair(2))
+
         while (self.running):
             self.render_items()
             self.handle_key_press()

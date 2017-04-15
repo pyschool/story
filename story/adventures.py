@@ -6,6 +6,11 @@ from .format import highlight
 from .data import _
 
 
+class AdventureVerificationError(Exception):
+
+    pass
+
+
 class BaseAdventure(object):
 
     files = [
@@ -35,15 +40,13 @@ class BaseAdventure(object):
 
     @property
     def problem(self):
-        problem = 'Adventure description not found.'
         for file in self.files:
             file = self.get_path(
                 file.format(name='README', language=self.manager.language))
             if os.path.exists(file):
                 with codecs.open(file, encoding='utf-8') as f:
-                    problem = f.read()
-                    break
-        return problem.format(**self.get_context())
+                    return f.read()
+        raise Exception('Adventure description not found')
 
     @property
     def solution(self):
@@ -91,8 +94,8 @@ class BaseAdventure(object):
             self.manager.current = None
             print(self.test_formatted)
             return 0
-        except AssertionError:
-            raise
+        except AdventureVerificationError as e:
+            print(str(e))
 
     def test(self, file):
         pass

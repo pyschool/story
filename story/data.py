@@ -65,9 +65,8 @@ class DataManager(object):
 
     language = property(get_language, set_language)
 
-    def set_current(self, language):
-        set_language(language)
-        self.data['current'] = language
+    def set_current(self, current):
+        self.data['current'] = current
         self.save()
 
     def get_current(self):
