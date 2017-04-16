@@ -1,5 +1,5 @@
 """
-Story - PySchool
+Story for PySchool
 """
 
 __author__ = 'PySchool'

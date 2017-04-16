@@ -1,40 +1,32 @@
-Story for PySchool
+
+==================
+Story for Pyschool
 ==================
 
-|pypi| |build| |coverage|
+
+.. image:: https://img.shields.io/pypi/v/story.svg
+        :target: https://pypi.python.org/pypi/story
+
+.. image:: https://img.shields.io/travis/pyschool/story.svg
+        :target: https://travis-ci.org/pyschool/story
+
+.. image:: https://readthedocs.org/projects/story/badge/?version=latest
+        :target: https://story.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
+
+.. image:: https://pyup.io/repos/github/pyschool/story/shield.svg
+     :target: https://pyup.io/repos/github/pyschool/story/
+     :alt: Updates
+
 
 .. image:: http://pyschool.github.io/img/logo.png
 
 
-==========
-Contribute
-==========
-
-Please see `CONTRIBUTING <https://github.com/pyschool/story/blob/master/CONTRIBUTING.rst>`_.
+* Free software: MIT license
+* Documentation: https://story.readthedocs.io.
 
 
-==========
-Change Log
-==========
+Features
+--------
 
-Please see `HISTORY <https://github.com/pyschool/story/blob/master/HISTORY.rst>`_.
-
-
-=======
-Licence
-=======
-
-Please see `LICENSE <https://github.com/pyschool/story/blob/master/LICENSE>`_.
-
-
-.. |pypi| image:: https://img.shields.io/pypi/v/story.svg?style=flat-square&label=latest%20version
-    :target: https://pypi.python.org/pypi/story
-    :alt: Latest version released on PyPi
-
-.. |coverage| image:: https://img.shields.io/coveralls/pyschool/story/master.svg?style=flat-square
-    :target: https://coveralls.io/r/pyschool/story?branch=master
-    :alt: Test coverage
-
-.. |build| image:: https://img.shields.io/travis/pyschool/story/master.svg?style=flat-square&label=build
-    :target: http://travis-ci.org/pyschool/story
-    :alt: Build status of the master branch
+* TODO

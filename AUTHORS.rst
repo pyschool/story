@@ -1,6 +1,13 @@
-==============
-Story PySchool
-==============
+=======
+Credits
+=======
 
-* `Nicolas Gonzalvez <https://github.com/Kryz>`_
-* `Pablo Ricco <https://github.com/pricco>`_
+Development Lead
+----------------
+
+* `Pablo Ricco <https://github.com/pricco>`_ <pricco@sophilabs.com>
+
+Contributors
+------------
+
+* `Nicolas Gonzalvez <https://github.com/ngonzalvez>`_

@@ -1,42 +1,47 @@
 #!/usr/bin/env python
 
-import codecs
+from setuptools import setup
 
-from setuptools import find_packages, setup
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
 
-import story
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
 
+requirements = [
+    'Pygments'
+]
 
-def long_description():
-    with codecs.open('README.rst', encoding='utf8') as f:
-        readme = f.read()
-    with codecs.open('HISTORY.rst', encoding='utf8') as f:
-        history = f.read()
-    return readme + history
-
+test_requirements = [
+]
 
 setup(
     name='story',
-    version=story.__version__,
-    description=story.__doc__.strip(),
-    long_description=long_description(),
-    url='http://pyschool.github.io',
-    download_url='https://github.com/pyschool/story',
-    author=story.__author__,
-    license=story.__licence__,
-    packages=find_packages(),
-    install_requires=[
-        'pygments',
+    version='1.0.3',
+    description='Story for pyschool.',
+    long_description=readme + '\n\n' + history,
+    author='PySchool',
+    author_email='pyschool@sophilabs.com',
+    url='https://github.com/pyschool/story',
+    packages=[
+        'story',
     ],
+    package_dir={'story': 'story'},
+    include_package_data=True,
+    install_requires=requirements,
+    license='MIT license',
+    zip_safe=False,
+    keywords='story',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
-        'Natural Language :: English',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python',
+        'Natural Language :: English',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
-        'Environment :: Console'
-    ]
+        'Programming Language :: Python :: 3.5',
+    ],
+    test_suite='tests',
+    tests_require=test_requirements
 )

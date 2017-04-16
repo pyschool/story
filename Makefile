@@ -1,9 +1,68 @@
+.PHONY: clean clean-test clean-pyc clean-build docs help
+.DEFAULT_GOAL := help
+define BROWSER_PYSCRIPT
+import os, webbrowser, sys
+try:
+	from urllib import pathname2url
+except:
+	from urllib.request import pathname2url
+
+webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
+endef
+export BROWSER_PYSCRIPT
+
+define PRINT_HELP_PYSCRIPT
+import re, sys
+
+for line in sys.stdin:
+	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
+	if match:
+		target, help = match.groups()
+		print("%-20s %s" % (target, help))
+endef
+export PRINT_HELP_PYSCRIPT
+
+BROWSER := python -c "$$BROWSER_PYSCRIPT"
 VERSION=$(shell grep __version__ story/__init__.py)
-REQUIREMENTS="requirements-dev.pip"
+REQUIREMENTS="requirements_dev.pip"
 TAG="\n\n\033[0;32m\#\#\# "
 END=" \#\#\# \033[0m\n"
 
 all: test
+
+help:
+	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+
+clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
+
+clean-build:
+	@echo $(TAG)Remove build artifacts$(END)
+	rm -fr build/
+	rm -fr dist/
+	rm -fr .eggs/
+	find . -name '*.egg-info' -exec rm -fr {} +
+	find . -name '*.egg' -exec rm -f {} +
+	@echo
+
+clean-pyc:
+	@echo $(TAG)Remove Python file artifacts$(END)
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
+	@echo
+
+clean-test:
+	@echo $(TAG)Remove test and coverage artifacts$(END)
+	rm -fr .tox/
+	rm -f .coverage
+	rm -fr htmlcov/
+	@echo
+
+lint:
+	@echo $(TAG)Remove test and coverage artifacts$(END)
+	flake8 story tests
+	@echo
 
 msg-init:
 	@echo $(TAG)Initializing messages from Story$(END)
@@ -25,60 +84,44 @@ msg-compile:
 
 msg: msg-extract msg-compile
 
-uninstall-story:
-	@echo $(TAG)Removing existing installation of Story$(END)
-	- pip uninstall --yes story >/dev/null
+coverage:
+	@echo $(TAG)Check code coverage quickly with the default Python$(END)
+	coverage run --source story -m pytest
+
+		coverage report -m
+		coverage html
+		$(BROWSER) htmlcov/index.html
 	@echo
 
-uninstall-all: uninstall-story
-	- pip uninstall --yes -r $(REQUIREMENTS)
-
-init: uninstall-story
-	@echo $(TAG)Installing dev requirements$(END)
-	pip install --upgrade -r $(REQUIREMENTS)
-	@echo $(TAG)Installing Story$(END)
-	pip install --upgrade --editable .
+docs:
+	@echo $(TAG)Generate Sphinx HTML documentation, including API docs$(END)
+	rm -f docs/story.rst
+	rm -f docs/modules.rst
+	sphinx-apidoc -o docs/ story
+	$(MAKE) -C docs clean
+	$(MAKE) -C docs html
+	$(BROWSER) docs/_build/html/index.html
 	@echo
 
-test: init
-	@echo $(TAG)Running tests in on current Python with coverage $(END)
-	py.test --cov ./story --cov ./tests --doctest-modules --verbose ./story ./tests
+servedocs: docs
+	@echo $(TAG)Compile the docs watching for changes$(END)
+	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 	@echo
 
-test-tox: init
-	@echo $(TAG)Running tests on all Pythons via Tox$(END)
-	tox
-	@echo
-
-test-dist: test-sdist test-bdist-wheel
-	@echo
-
-test-sdist: clean uninstall-story
-	@echo $(TAG)Testing sdist build an installation$(END)
-	python setup.py sdist
-	pip install --force-reinstall --upgrade dist/*.gz
-	@echo
-
-test-bdist-wheel: clean uninstall-story
-	@echo $(TAG)Testing wheel build an installation$(END)
-	python setup.py bdist_wheel
-	pip install --force-reinstall --upgrade dist/*.whl
-	@echo
-
-# This tests everything, even this Makefile.
-test-all: uninstall-all clean init test test-tox test-dist
-
-publish: test-all
-	@echo $(TAG)Testing wheel build an installation$(END)
-	@echo "$(VERSION)"
-	@echo "$(VERSION)" | grep -q "dev"  && echo "!!!Not publishing dev version!!!" && exit 1
-	python setup.py register
+release: clean
+	@echo $(TAG)Package and upload a release$(END)
 	python setup.py sdist upload
 	python setup.py bdist_wheel upload
 	@echo
 
-clean:
-	@echo $(TAG)Cleaning up$(END)
-	rm -rf .tox *.egg dist build .coverage
-	find . -name '__pycache__' -delete -print -o -name '*.pyc' -delete -print
+dist: clean
+	@echo $(TAG)Builds source and wheel package$(END)
+	python setup.py sdist
+	python setup.py bdist_wheel
+	ls -l dist
+	@echo
+
+install: clean
+	@echo $(TAG)Install the package to the active Python site-packages$(END)
+	python setup.py install
 	@echo
