@@ -1,5 +1,10 @@
 import curses
+import os
+
 from .data import _
+
+
+SPACE = ' '
 
 
 class Keys(object):
@@ -7,260 +12,246 @@ class Keys(object):
     ESCAPE = 27
     UP_ARROW = 259
     DOWN_ARROW = 258
+    J = 106
+    K = 107
+    Q = 113
     ENTER = 10
 
 
 class Menu(object):
 
     running = True
-    items = []
-    actionable_items = []
-    actionable_count = 0
-    selected_index = 0
-    padding_y = 2
-    padding_x = 3
-    x = 2
-    y = 2
-    width = 50
+    padding_x = 2
+    padding_y = 1
+    x = 1
+    y = 1
+    width = 74
 
     def __init__(self, story):
         self.story = story
 
-        # Screen initialization.
-        self.screen = curses.initscr()
-        self.screen.keypad(True)
+        items = [
+            TitleItem(self, story.title),
+            TextItem(self, _('Select an exercise and hit ENTER to begin')),
+            LineItem(self),
+            SpaceItem(self)
+        ]
 
+        for adventure in story.adventures:
+            items.append(AdventureItem(self, adventure))
+
+        items += [
+            LineItem(self),
+            SpaceItem(self),
+            HelpItem(self),
+            ExitItem(self),
+        ]
+
+        next(filter(lambda i: i.selectable, items)).selected = True
+        self.items = items
+
+    @property
+    def height(self):
+        return sum([item.size for item in self.items])
+
+    @property
+    def selectable_items(self):
+        return filter(lambda i: i.selectable, self.items)
+
+    @property
+    def selected_item(self):
+        return next(filter(lambda i: i.selected, self.selectable_items))
+
+    def show(self):
+        self.running = True
+        if os.environ.get('TMUX'):
+            os.environ['TERM'] = 'screen'
+        curses.wrapper(self.display)
+
+    def display(self, screen):
         curses.noecho()
-        curses.start_color()
         curses.curs_set(0)
-        self.screen.refresh()
+        curses.start_color()
+        window = screen.subwin(
+            sum([item.size for item in self.items]) + self.padding_y * 2,
+            self.width + self.padding_x * 2,
+            self.y,
+            self.x
+        )
+        window.keypad(1)
+        window.clear()
 
         # Colors definition.
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
         curses.init_pair(2, curses.COLOR_BLUE, curses.COLOR_WHITE)
 
-    @property
-    def height(self):
-        height = 0
-
-        for item in self.items:
-            height += item.size
-
-        return height
-
-    @property
-    def adventures(self):
-        return self.story.adventures
-
-    @property
-    def selected_item(self):
-        return self.actionable_items[self.selected_index]
-
-    def show(self):
-        # Menu header.
-        title = TextItem(self, self.story.title.upper(), 0)
-        usage = TextItem(self, _('Select an exercise and hit ENTER to begin'),
-                         1)
-
-        self.items.append(title)
-        self.items.append(usage)
-        self.items.append(LineItem(self, 2))
-
-        title.set_style(curses.A_BOLD)
-
-        position = 0
-
-        for item in self.items:
-            position += item.size
-
-        # Exercises.
-        for adventure in self.adventures:
-            item = AdventureItem(self, adventure, position)
-            self.items.append(item)
-            self.actionable_items.append(item)
-
-            position += 1   # Position of the current item in the menu.
-            self.actionable_count += 1  # Number of actionable items.
-
-        self.items.append(LineItem(self, position))
-
-        default_items = [
-            HelpItem(self, position + 2),
-            ExitItem(self, position + 3),
-        ]
-
-        for item in default_items:
-            self.items.append(item)
-            self.actionable_items.append(item)
-            self.actionable_count += 1
-
-        # Highlight the item selected by default
-        self.selected_item.set_style(curses.color_pair(2))
+        window.bkgd(' ', curses.color_pair(1))
 
         while (self.running):
-            self.render_items()
-            self.handle_key_press()
+            # Render
+            position = 0
+            for item in self.items:
+                item.render(
+                    window,
+                    self.padding_x,
+                    self.padding_y + position,
+                    self.width
+                )
+                position += item.size
 
-    def handle_key_press(self):
-        key = self.screen.getch()
-        actions = {
-            Keys.ESCAPE: self.exit,
-            Keys.UP_ARROW: self.select_prev,
-            Keys.DOWN_ARROW: self.select_next,
-            Keys.ENTER: self.selected_item.select
-        }
+            curses.doupdate()
 
-        selected_action = actions.get(key)
+            # Key
+            key = window.getch()
+            actions = {
+                Keys.ESCAPE: self.exit,
+                Keys.UP_ARROW: self.select_previous,
+                Keys.K: self.select_previous,
+                Keys.DOWN_ARROW: self.select_next,
+                Keys.J: self.select_next,
+                Keys.ENTER: self.selected_item.execute,
+                Keys.Q: self.exit
+            }
+            selected_action = actions.get(key)
+            if (selected_action):
+                selected_action()
 
-        if (selected_action):
-            selected_action()
+        window.clear()
+        curses.doupdate()
 
-    def select_prev(self):
-        # Unhighlight the previous selection.
-        self.selected_item.set_style(self.selected_item.default_style)
+    def select_previous(self):
+        current_item = self.selected_item
+        current_item.selected = False
 
-        self.selected_index -= 1
-
-        if (self.selected_index < 0):
-            self.selected_index = len(self.actionable_items) - 1
-
-        # Highlight the just selected item.
-        self.selected_item.set_style(curses.color_pair(2))
+        previous_item = None
+        for item in self.selectable_items:
+            if item == current_item and previous_item:
+                break
+            previous_item = item
+        previous_item.selected = True
 
     def select_next(self):
-        # Unhighlight the previous selection.
-        self.selected_item.set_style(self.selected_item.default_style)
+        current_item = self.selected_item
+        current_item.selected = False
 
-        self.selected_index += 1
-
-        if (self.selected_index >= self.actionable_count):
-            self.selected_index = 0
-
-        # Highlight the just selected item.
-        self.selected_item.set_style(curses.color_pair(2))
-
-    def render_items(self):
-        # Menu container.
-        self.container = curses.newwin(
-            self.height + self.padding_y * 2,
-            self.width + self.padding_x * 2,
-            self.x,
-            self.y,
-        )
-        self.container.bkgd(curses.color_pair(1))
-
-        for item in self.items:
-            item.render()
-
-        self.container.refresh()
+        first_item = None
+        previous_item = None
+        for item in self.selectable_items:
+            if first_item is None:
+                first_item = item
+            if previous_item == current_item:
+                break
+            previous_item = item
+        if previous_item == item:
+            item = first_item
+        item.selected = True
 
     def exit(self):
-        if (self.running):
+        if self.running:
             curses.endwin()
         self.running = False
 
 
 class Item(object):
 
-    selectable = True
-    style = curses.A_NORMAL
-    default_style = curses.A_NORMAL
-    padding = 1
+    selectable = False
     size = 1
 
-    def __init__(self, menu, text, position):
+    def __init__(self, menu):
         self.menu = menu
-        self.text = text.upper()
-        self.position = position
 
     @property
-    def completed(self):
-        return False
+    def style(self):
+        return curses.color_pair(1)
 
-    @property
-    def padded_width(self):
-        return self.menu.width - self.padding * 2
-
-    def set_style(self, style):
-        self.style = style
-
-    def select(self):
-        raise NotImplemented
-
-    def get_text(self):
-        spaces = (self.padded_width - len(self.text)) * ' '
-        return self.text + spaces
-
-    def render(self):
-        text = self.get_text()
-        padding = ' ' * self.padding
-
-        self.menu.container.addstr(
-            self.position + self.menu.padding_y,
-            self.menu.padding_x,
-            padding + text + padding,
-            self.style
-        )
+    def render(self, window, x, y, width):
+        raise NotImplementedError
 
 
-class LineItem(Item):
+class SpaceItem(Item):
 
-    selectable = False
-    style = curses.A_UNDERLINE
-    padding = 0
-    size = 2
-
-    def __init__(self, menu, position):
-        self.menu = menu
-        self.position = position
-
-    def get_text(self):
-        return self.menu.width * ' '
+    def render(self, *args, **kwargs):
+        pass
 
 
 class TextItem(Item):
 
-    selectable = False
+    def __init__(self, menu, text=None):
+        super().__init__(menu)
+        if text:
+            self.text = text
 
-    def __init__(self, menu, text, position):
-        super().__init__(menu, text, position)
-        self.text = text
+    def get_text(self, width):
+        return self.text
 
-
-class CommandItem(Item):
-
-    def __init__(self, menu, position):
-        self.menu = menu
-        self.position = position
-
-    def get_text(self):
-        spaces = (self.padded_width - len(self.text)) * ' '
-        return self.text.upper() + spaces
-
-    def select(self):
-        pass
+    def render(self, window, x, y, width):
+        window.addstr(y, x, self.get_text(width), self.style)
 
 
-class AdventureItem(Item):
+class LineItem(TextItem):
 
-    def __init__(self, menu, adventure, position):
+    def get_text(self, width):
+        return width * '_'
+
+
+class TitleItem(TextItem):
+
+    def get_text(self, width):
+        return super().get_text(width).upper()
+
+    @property
+    def style(self):
+        return curses.A_BOLD | super().style
+
+
+class SelectableMixin(object):
+
+    selectable = True
+    selected = False
+
+    def get_text(self, width):
+        text = super().get_text(width).upper()
+        text = text[:width]
+        text += (width - len(text)) * SPACE
+        return text
+
+    @property
+    def style(self):
+        if self.selected:
+            return curses.color_pair(2)
+        return curses.color_pair(1)
+
+    def execute(self):
+        raise NotImplementedError
+
+
+class CommandItem(SelectableMixin, TextItem):
+
+    pass
+
+
+class AdventureItem(SelectableMixin, TextItem):
+
+    def __init__(self, menu, adventure):
+        super().__init__(menu)
         self.adventure = adventure
-        super().__init__(menu, '» ' + adventure.title, position)
+
+    def get_text(self, width):
+        text = '» ' + super().get_text(width)
+        text = text[:width]
+        if self.completed:
+            text = text[:width - 11] + '[COMPLETED]'
+        return text
 
     @property
     def completed(self):
         return self.adventure.completed
 
-    def get_text(self):
-        if (self.completed):
-            suffix = '[COMPLETED]'
-        else:
-            suffix = ''
+    @property
+    def text(self):
+        return self.adventure.title
 
-        spaces = (self.padded_width - len(self.text) - len(suffix)) * ' '
-        return self.text.upper() + spaces + suffix
-
-    def select(self):
+    def execute(self):
         self.menu.exit()
         self.menu.story.set_current(self.adventure.name)
         print(self.adventure.problem_formatted)
@@ -269,10 +260,8 @@ class AdventureItem(Item):
 class HelpItem(CommandItem):
 
     text = _('Help')
-    style = curses.A_BOLD
-    default_style = curses.A_BOLD
 
-    def select(self):
+    def execute(self):
         self.menu.exit()
 
         from .commands import HelpCommand
@@ -282,8 +271,6 @@ class HelpItem(CommandItem):
 class ExitItem(CommandItem):
 
     text = _('Exit')
-    style = curses.A_BOLD
-    default_style = curses.A_BOLD
 
-    def select(self):
+    def execute(self):
         self.menu.exit()
