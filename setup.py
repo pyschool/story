@@ -17,7 +17,7 @@ test_requirements = [
 
 setup(
     name='story',
-    version='1.1.0',
+    version='1.1.1',
     description='Story for pyschool.',
     long_description=readme + '\n\n' + history,
     author='PySchool',
