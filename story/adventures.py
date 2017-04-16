@@ -3,7 +3,7 @@ import inspect
 import os
 
 from .format import highlight
-from .data import _
+from .translation import gettext as _
 
 
 class AdventureVerificationError(Exception):

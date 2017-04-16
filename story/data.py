@@ -1,18 +1,8 @@
 import codecs
 import json
 import os
-import gettext
 
-
-domain = 'story'
-localedir = os.path.join(os.path.dirname(__file__), 'locale/')
-gettext.bindtextdomain(domain, localedir)
-translation = gettext.translation(domain, localedir, fallback=True)
-_ = lambda msg: gettext.dgettext(domain, msg)
-
-
-def set_language(language):
-    os.environ['LANG'] = str(language)
+from .translation import DEFAULT_LANGUAGE, activate
 
 
 class DataManager(object):
@@ -21,8 +11,8 @@ class DataManager(object):
     _data = None
 
     def __init__(self, *args, **kwargs):
-        set_language(self.language)
         super().__init__(*args, **kwargs)
+        self.activate_language()
 
     def load(self):
         if self._data is None:
@@ -58,12 +48,15 @@ class DataManager(object):
     def set_language(self, language):
         self.data['language'] = language
         self.save()
-        set_language(self.language)
+        self.activate_language()
 
     def get_language(self):
-        return self.data.get('language', self.default_language)
+        return self.data.get('language', DEFAULT_LANGUAGE)
 
     language = property(get_language, set_language)
+
+    def activate_language(self):
+        activate(self.language)
 
     def set_current(self, current):
         self.data['current'] = current

@@ -7,20 +7,20 @@ all: test
 
 msg-init:
 	@echo $(TAG)Initializing messages from Story$(END)
-	pybabel init -D story -i story/locale/story.pot -d story/locale -l en
-	pybabel init -D story -i story/locale/story.pot -d story/locale -l es
+	pybabel init -D pyschool -i story/locale/story.pot -d story/locale -l en
+	pybabel init -D pyschool -i story/locale/story.pot -d story/locale -l es
 	@echo
 
 msg-extract:
 	@echo $(TAG)Extracting messages from Story$(END)
 	pybabel extract -o story/locale/story.pot story
-	pybabel update -D story -i story/locale/story.pot -d story/locale -l en
-	pybabel update -D story -i story/locale/story.pot -d story/locale -l es
+	pybabel update -D pyschool -i story/locale/story.pot -d story/locale -l en
+	pybabel update -D pyschool -i story/locale/story.pot -d story/locale -l es
 	@echo
 
 msg-compile:
 	@echo $(TAG)Compiling messages to Story$(END)
-	pybabel compile -D story -d story/locale -f --statistics
+	pybabel compile -D pyschool -d story/locale -f --statistics
 	@echo
 
 msg: msg-extract msg-compile

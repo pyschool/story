@@ -3,7 +3,7 @@ import sys
 
 from . import __version__
 from .menu import Menu
-from .data import _
+from .translation import gettext as _
 
 
 class BaseCommand(object):
