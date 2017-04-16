@@ -84,6 +84,16 @@ msg-compile:
 
 msg: msg-extract msg-compile
 
+test:
+	@echo $(TAG)Run tests quickly with the default Python$(END)
+	PYTHONPATH=. py.test ./tests
+	@echo
+
+test-all:
+	@echo $(TAG)Run tests on every Python version with tox$(END)
+	tox
+	@echo
+
 coverage:
 	@echo $(TAG)Check code coverage quickly with the default Python$(END)
 	coverage run --source story -m pytest

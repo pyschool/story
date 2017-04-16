@@ -3,6 +3,9 @@
 Story for Pyschool
 ==================
 
+.. image:: http://pyschool.github.io/img/logo.png
+
+|
 
 .. image:: https://img.shields.io/pypi/v/story.svg
         :target: https://pypi.python.org/pypi/story
@@ -17,9 +20,6 @@ Story for Pyschool
 .. image:: https://pyup.io/repos/github/pyschool/story/shield.svg
      :target: https://pyup.io/repos/github/pyschool/story/
      :alt: Updates
-
-
-.. image:: http://pyschool.github.io/img/logo.png
 
 
 * Free software: MIT license
