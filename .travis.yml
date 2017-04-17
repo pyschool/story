@@ -28,6 +28,4 @@ env:
 install: pip install -U tox
 language: python
 python: 3.5
-script:
-- pybabel compile -D pyschool -d story/locale -f --statistics
-- tox -e ${TOXENV}
+script: tox -e ${TOXENV}
