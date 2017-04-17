@@ -118,13 +118,13 @@ servedocs: docs
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 	@echo
 
-release: clean
+release: clean msg-compile
 	@echo $(TAG)Package and upload a release$(END)
 	python setup.py sdist upload
 	python setup.py bdist_wheel upload
 	@echo
 
-dist: clean
+dist: clean msg-compile
 	@echo $(TAG)Builds source and wheel package$(END)
 	python setup.py sdist
 	python setup.py bdist_wheel
