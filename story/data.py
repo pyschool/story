@@ -1,8 +1,9 @@
 import codecs
 import json
 import os
+import sys
 
-from .translation import DEFAULT_LANGUAGE, activate
+from .translation import DEFAULT_LANGUAGE, activate, add_localedir
 
 
 class DataManager(object):
@@ -13,6 +14,10 @@ class DataManager(object):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.activate_language()
+        # Load story translations
+        module = sys.modules[self.__class__.__module__.split('.')[0]]
+        for path in module.__path__:
+            add_localedir(path)
 
     def load(self):
         if self._data is None:

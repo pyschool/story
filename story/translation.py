@@ -5,7 +5,7 @@ import gettext as gettext_module
 from .utils import lazy
 
 
-_localedirs = []
+_localedirs = [os.path.dirname(__file__)]
 _translations = {}
 _active = local()
 _default = None
@@ -29,16 +29,14 @@ class Translations(gettext_module.GNUTranslations):
         super().__init__()
 
         self.language = language
+        self.localedirs = []
         self._catalog = None
         # If a language doesn't have a catalog, use the Germanic default for
         # pluralization: anything except one is pluralized.
         self.plural = lambda n: int(n != 1)
 
-        self._init_translation_catalog()
-
         for localedir in _localedirs:
-            translation = self._new_gnu_trans(localedir)
-            self.merge(translation)
+            self.add_localedir_translations(localedir)
 
     def __repr__(self):
         return '<Translations lang:%s>' % self.language
@@ -59,16 +57,15 @@ class Translations(gettext_module.GNUTranslations):
             codeset='utf-8',
             fallback=use_null_fallback)
 
-    def _init_translation_catalog(self):
-        """Create a base catalog using global translations."""
-        localedir = os.path.join(os.path.dirname(__file__), 'locale')
-        translation = self._new_gnu_trans(localedir)
-        self.merge(translation)
-
     def add_localedir_translations(self, localedir):
         """Merge translations from localedir."""
-        if os.path.exists(localedir):
-            translation = self._new_gnu_trans(localedir)
+        global _localedirs
+        if localedir in self.localedirs:
+            return
+        self.localedirs.append(localedir)
+        full_localedir = os.path.join(localedir, 'locale')
+        if os.path.exists(full_localedir):
+            translation = self._new_gnu_trans(full_localedir)
             self.merge(translation)
 
     def merge(self, other):
@@ -127,10 +124,11 @@ def get_language():
 def add_localedir(localedir):
     global _translations
     global _localedirs
-    if localedir not in _localedirs:
-        _localedirs.append(localedir)
-        for translation in _translations.values():
-            translation.add_localedir_translations(localedir)
+    if localedir in _localedirs:
+        return
+    _localedirs.append(localedir)
+    for translation in _translations.values():
+        translation.add_localedir_translations(localedir)
 
 
 def gettext(message):
