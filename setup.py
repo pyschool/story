@@ -10,7 +10,7 @@ with open('HISTORY.rst') as history_file:
 
 setup(
     name='story',
-    version='1.1.4',
+    version='1.1.5',
     description='Story for pyschool.',
     long_description=readme + '\n\n' + history,
     author='PySchool',
