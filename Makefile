@@ -84,7 +84,7 @@ msg-compile:
 
 msg: msg-extract msg-compile
 
-test:
+test: msg-compile
 	@echo $(TAG)Run tests quickly with the default Python$(END)
 	PYTHONPATH=. py.test ./tests
 	@echo
