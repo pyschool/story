@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-04-16 18:29-0300\n"
+"POT-Creation-Date: 2017-04-26 17:13-0300\n"
 "PO-Revision-Date: 2017-04-16 18:28-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -58,12 +58,11 @@ msgstr ""
 "\n"
 "\n"
 " » Para mostrar estas instrucciones otra vez ejecuta: {script} print\n"
-" » Para ejecutar tu programa en un ambiente de desarrollo, ejecuta: {script} run "
-"programa.py\n"
+" » Para ejecutar tu programa en un ambiente de desarrollo, ejecuta: "
+"{script} run programa.py\n"
 " » Para verificar tu programa, ejecuta: {script} verify program.py\n"
 " » Para más ayuda Ejecuta: {script} help\n"
 " \n"
-
 
 #: story/adventures.py:140
 msgid ""
@@ -97,8 +96,8 @@ msgstr ""
 "\n"
 "\n"
 " » Para mostrar estas instrucciones otra vez ejecuta: {script} print\n"
-" » Para ejecutar tu programa en un ambiente de desarrollo, ejecuta: {script} run "
-"programa.py\n"
+" » Para ejecutar tu programa en un ambiente de desarrollo, ejecuta: "
+"{script} run programa.py\n"
 " » Para verificar tu programa, ejecuta: {script} verify program.py\n"
 " » Para más ayuda Ejecuta: {script} help\n"
 " \n"
@@ -138,8 +137,8 @@ msgid ""
 "Print the instructions for the next incomplete adventure after the "
 "currently selected adventure."
 msgstr ""
-"Muestra las instrucciones para la siguiente aventura no completada, luego de "
-"la aventura que está seleccionada actualmente."
+"Muestra las instrucciones para la siguiente aventura no completada, luego"
+" de la aventura que está seleccionada actualmente."
 
 #: story/commands.py:103 story/commands.py:121
 msgid "Not implemented.\n"
@@ -171,11 +170,11 @@ msgstr "Selecciona un ejercicio y presiona ENTER para comenzar"
 
 #: story/menu.py:317
 msgid "Choose language"
-msgstr "Elije un idioma"
+msgstr "Elige un idioma"
 
 #: story/menu.py:325
 msgid "Choose a language:"
-msgstr "Elije un idioma"
+msgstr "Elige un idioma"
 
 #: story/menu.py:368
 msgid "Help"
@@ -189,10 +188,10 @@ msgstr "Cancelar"
 msgid "Exit"
 msgstr "Salir"
 
-#: story/translation.py:153
+#: story/translation.py:151
 msgid "English"
 msgstr "Inglés"
 
-#: story/translation.py:154
+#: story/translation.py:152
 msgid "Spanish"
 msgstr "Español"
