@@ -11,3 +11,4 @@ Contributors
 ------------
 
 * `Nicolas Gonzalvez <https://github.com/ngonzalvez>`_
+* `Ignacio Avas <https://github.com/igui>`_ <iavas@sophilabs.com>
