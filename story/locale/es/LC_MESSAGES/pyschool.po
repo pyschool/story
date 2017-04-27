@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-04-26 17:13-0300\n"
+"POT-Creation-Date: 2017-04-27 16:09-0300\n"
 "PO-Revision-Date: 2017-04-16 18:28-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -164,27 +164,35 @@ msgstr "Imprime la solución para una aventura"
 msgid "Change the system to the specified language."
 msgstr "Cambia el sistema al idioma especificado"
 
-#: story/menu.py:144
+#: story/menu.py:149
 msgid "Select an exercise and hit ENTER to begin"
 msgstr "Selecciona un ejercicio y presiona ENTER para comenzar"
 
-#: story/menu.py:317
+#: story/menu.py:309
+msgid "COMPLETED"
+msgstr "COMPLETO"
+
+#: story/menu.py:329
 msgid "Choose language"
 msgstr "Elige un idioma"
 
-#: story/menu.py:325
+#: story/menu.py:337
 msgid "Choose a language:"
 msgstr "Elige un idioma"
 
-#: story/menu.py:368
+#: story/menu.py:365
+msgid "CURRENT"
+msgstr "SELECCIONADO"
+
+#: story/menu.py:380
 msgid "Help"
 msgstr "Ayuda"
 
-#: story/menu.py:379
+#: story/menu.py:391
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: story/menu.py:387
+#: story/menu.py:399
 msgid "Exit"
 msgstr "Salir"
 
@@ -195,3 +203,4 @@ msgstr "Inglés"
 #: story/translation.py:152
 msgid "Spanish"
 msgstr "Español"
+
