@@ -3,10 +3,10 @@ Handles the Main Menu of the story
 """
 import curses.panel
 import os
-import unicodedata
+import locale
+
 
 from .translation import gettext as _, LANGUAGES
-
 
 SPACE = ' '
 
@@ -140,6 +140,7 @@ class Menu():
 
     def __init__(self, story):
         self.story = story
+        self.screen = None
 
     def get_initial(self):
         level = Level(self)
@@ -242,12 +243,16 @@ class TextItem(Item):
     def get_text(self, width):
         return self.text
 
+    @staticmethod
+    def lr_justify(left, right, width):
+        return '{}{}{}' \
+            .format(left, ' '*(width-len(left+right)), right)[:width]
+
     def render(self, window, x, y, width):
         # FIXME: We need to cast get_text to str because of lazy()
-        original_str = str(self.get_text(width))
-        ascii_str = unicodedata.normalize('NFKD', original_str).encode('ascii', 'ignore')
+        text = str(self.get_text(width)).ljust(width)
 
-        window.addstr(y, x, ascii_str, self.style)
+        window.addstr(y, x, text, self.style)
 
 
 class LineItem(TextItem):
@@ -299,11 +304,11 @@ class AdventureItem(SelectableMixin, TextItem):
         self.adventure = adventure
 
     def get_text(self, width):
-        text = '> ' + super().get_text(width)
-        text = text[:width]
+        left_text = '» ' + super().get_text(width).rstrip()
         if self.completed:
-            text = text[:width - 11] + '[COMPLETED]'
-        return text
+            return self.lr_justify(left_text, '[%s]' % _('COMPLETED'), width)
+        else:
+            return left_text[:width]
 
     @property
     def completed(self):
@@ -355,11 +360,11 @@ class LanguageItem(SelectableMixin, TextItem):
         self.name = name
 
     def get_text(self, width):
-        text = '» ' + super().get_text(width)
-        text = text[:width]
+        left_text = '» ' + super().get_text(width).rstrip()
         if self.menu.story.language == self.code:
-            text = text[:width - 9] + '[CURRENT]'
-        return text
+            return self.lr_justify(left_text, '[%s]' % _('CURRENT'), width)
+        else:
+            return left_text[:width]
 
     @property
     def text(self):
