@@ -1,5 +1,9 @@
+"""
+Handles the Main Menu of the story
+"""
 import curses.panel
 import os
+import unicodedata
 
 from .translation import gettext as _, LANGUAGES
 
@@ -240,7 +244,10 @@ class TextItem(Item):
 
     def render(self, window, x, y, width):
         # FIXME: We need to cast get_text to str because of lazy()
-        window.addstr(y, x, str(self.get_text(width)), self.style)
+        original_str = str(self.get_text(width))
+        ascii_str = unicodedata.normalize('NFKD', original_str).encode('ascii', 'ignore')
+
+        window.addstr(y, x, ascii_str, self.style)
 
 
 class LineItem(TextItem):
@@ -292,7 +299,7 @@ class AdventureItem(SelectableMixin, TextItem):
         self.adventure = adventure
 
     def get_text(self, width):
-        text = '» ' + super().get_text(width)
+        text = '> ' + super().get_text(width)
         text = text[:width]
         if self.completed:
             text = text[:width - 11] + '[COMPLETED]'
