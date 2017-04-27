@@ -305,7 +305,8 @@ class AdventureItem(SelectableMixin, TextItem):
     def get_text(self, width):
         left_text = '» ' + super().get_text(width).rstrip()
         if self.completed:
-            return self.lr_justify(left_text, '[%s]' % _('COMPLETED'), width)
+            return self.lr_justify(
+                left_text, '[{}]'.format(_('COMPLETED')), width)
         else:
             return left_text[:width]
 
@@ -361,7 +362,8 @@ class LanguageItem(SelectableMixin, TextItem):
     def get_text(self, width):
         left_text = '» ' + super().get_text(width).rstrip()
         if self.menu.story.language == self.code:
-            return self.lr_justify(left_text, '[%s]' % _('CURRENT'), width)
+            return self.lr_justify(
+                left_text, '[{}]'.format(_('CURRENT')), width)
         else:
             return left_text[:width]
 
