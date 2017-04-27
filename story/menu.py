@@ -3,7 +3,6 @@ Handles the Main Menu of the story
 """
 import curses.panel
 import os
-import locale
 
 
 from .translation import gettext as _, LANGUAGES
@@ -246,7 +245,7 @@ class TextItem(Item):
     @staticmethod
     def lr_justify(left, right, width):
         return '{}{}{}' \
-            .format(left, ' '*(width-len(left+right)), right)[:width]
+            .format(left, ' ' * (width - len(left + right)), right)[:width]
 
     def render(self, window, x, y, width):
         # FIXME: We need to cast get_text to str because of lazy()
