@@ -71,13 +71,13 @@ class BaseAdventure(object):
     @property
     def problem_formatted(self):
         context = self.get_context()
-        context['adventure_problem'] = self.problem.format(**context)
+        context['adventure_problem'] = self.problem
         return highlight(problem_wrapper.format(**context))
 
     @property
     def solution_formatted(self):
         context = self.get_context()
-        context['adventure_solution'] = self.solution.format(**context)
+        context['adventure_solution'] = self.solution
         return highlight(solution_wrapper.format(**context))
 
     @property
