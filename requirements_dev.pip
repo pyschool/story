@@ -10,5 +10,5 @@ cryptography==1.8.1
 PyYAML==3.12
 pytest==3.0.7
 Pygments==2.2.0
-Babel==2.4.0
+Babel==2.5.2
 docutils==0.13.1
