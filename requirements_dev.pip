@@ -7,7 +7,7 @@ tox==2.7.0
 coverage==4.3.4
 Sphinx==1.5.5
 cryptography==1.8.1
-PyYAML==3.12
+PyYAML==5.3
 pytest==3.0.7
 Pygments==2.2.0
 Babel==2.4.0
